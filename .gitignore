@@ -2,6 +2,9 @@
 .DS_Store
 *.db
 pets/animal/pics/
-pets/src/media/*.jpg
+pets/src/media/*.*
+pets/src/upload/*.*
 *.pyc
 local_settings.py
+*~
+.elasticbeanstalk/

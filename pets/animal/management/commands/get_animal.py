@@ -1,35 +1,39 @@
 from django.core.management.base import BaseCommand
 from animal.models import Animal
+from animal.utils import thumbnail
 import json
 import urllib2
-import os
-import Image
+import urllib
 
 
 class Command(BaseCommand):
     args = '<>'
     help = 'get animal data from http://data.taipei.gov.tw'
-    url = "http://163.29.39.183/GetAnimals.aspx"
+    #url = "http://163.29.39.183/GetAnimals.aspx"
+    params = urllib.urlencode({'resource_id': 'c57f54e2-8ac3-4d30-bce0-637a8968796e'})
+    url = "http://60.199.253.136/api/action/datastore_search" + '?' + params
 
     def handle(self, *args, **options):
-        print self.url
+        print "start\n get data from" + self.url
         data = urllib2.urlopen(self.url)
         j = json.load(data)
+        j = j["result"]["records"]
+        counter = 0
         for i in j:
-            print i["Name"]
             a1 = Animal.objects.filter(accept_num=i["AcceptNum"])
-            print a1
             if not a1:
+                counter += 1
+                print "new ->"
+                print (i["Name"]).encode('utf-8')
+                print i["AcceptNum"]
                 url = i["ImageName"]
                 url_file = url.split("/")[-1]
                 f = urllib2.urlopen(url)
                 data = f.read()
                 with open("src/media/" + url_file, "wb") as code:
                     code.write(data)
-                f.path = "src/media/" + url_file
-                f.url = url_file
-                print self.thumbnail(f, "248x350")
-                print self.thumbnail(f, "248x350", True)
+                print thumbnail("src/media/" + url_file, "248x350")
+                print thumbnail("src/media/" + url_file, "248x350", True)
                 a = Animal(name=i["Name"],
                            sex=i["Sex"],
                            type=i["Type"],
@@ -51,30 +55,5 @@ class Command(BaseCommand):
                            image_name=i["ImageName"],
                            image_file=url_file,)
                 a.save()
+        print "total %s pet updated" % counter
         self.stdout.write('end\n')
-
-    def thumbnail(self, file, size='104x104', x2=False):
-        # defining the size
-        x, y = [int(x) for x in size.split('x')]
-        # defining the filename and the miniature filename
-        filehead, filetail = os.path.split(file.path)
-        basename, format = os.path.splitext(filetail)
-        miniature = basename + '_' + size + format
-        if x2:
-            miniature = basename + '_' + size + '@2x' + format
-        filename = file.path
-        miniature_filename = os.path.join(filehead, miniature)
-        filehead, filetail = os.path.split(file.url)
-        miniature_url = filehead + '/' + miniature
-        if os.path.exists(miniature_filename) and os.path.getmtime(filename) > os.path.getmtime(miniature_filename):
-            os.unlink(miniature_filename)
-        # if the image wasn't already resized, resize it
-        if not os.path.exists(miniature_filename):
-            image = Image.open(filename)
-            image.thumbnail([x, y], Image.ANTIALIAS)
-            try:
-                image.save(miniature_filename, image.format, quality=90, optimize=1)
-            except:
-                image.save(miniature_filename, image.format, quality=90)
-
-        return miniature_url

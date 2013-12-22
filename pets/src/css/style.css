@@ -226,6 +226,11 @@ header {
 		-ms-transition: all 0.3s ease-in-out;
 			transition: all 0.3s ease-in-out;
 }
+.navbar .brand img {
+	margin-top: -10px;
+	margin-bottom: -10px;
+	height: 40px;
+}
 
 .navbar .brand:hover {
 	color: #bfbfbf;
@@ -401,12 +406,6 @@ header {
   	border-bottom-color: #080808 !important;	
 }
 
-.nav-logo {
-	position:absolute;
-	margin-left:-80px;
-	margin-top:-30px;
-}
-
 /* Wrapper
 =================================================================== */
 
@@ -473,6 +472,10 @@ header {
 #wall .item {
 	margin: 0px;
 	margin-bottom: 30px;
+}
+
+#wall .item .actions a {
+    color: white;
 }
 
 #wall .item .meta {
@@ -586,6 +589,44 @@ header {
   #wall .item .flex-video { padding-top: 0; }
 }
 	
+
+/* Profile
+=================================================================== */
+
+#profile .name {
+    font-size: 26px;
+    text-shadow: 1px 1px 1px white;
+    margin: 10px 0;
+}
+
+#profile .sex {
+    text-shadow: none;
+}
+
+#profile .male {
+    color: #003366;
+}
+#profile .female {
+    color: #bd362f;
+}
+
+#profile .meta {
+    margin: 10px 0;
+}
+
+#profile .meta .field {
+    margin: 5px 0;
+}
+
+#profile .meta .label {
+    padding: 5px;
+}
+
+#profile .meta div,
+#profile .meta span {
+    font-size: 16px;
+}
+
 
 /* Page Title
 =================================================================== */
