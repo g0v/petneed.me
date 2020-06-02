@@ -6,7 +6,7 @@
     "cosecantTW",
     "waitingkuo",
     "ttcat",
-    "linfion",
+    "linfion"
   ],
   "status": "beta",
   "name": "petneedme",
@@ -19,11 +19,9 @@
     "type": "git",
     "url": "https://github.com/jsleetw/petneed.me"
   },
-  "licenses": [
-    {
-      "type": "MIT"
-    }
-  ],
+  "licenses": [{
+    "type": "MIT"
+  }],
   "keywords": [
     "javascript",
     "python",
